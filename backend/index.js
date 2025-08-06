@@ -1,13 +1,18 @@
-require('dotenv').config(); // Carrega as variáveis de ambiente do .env
+// backend/index.js
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const authRoutes = require('./routes/authRoutes'); // Importa as rotas de autenticação
 
 const app = express();
-const PORT = process.env.PORT || 5000; // Define a porta do servidor, padrão 5000
+const PORT = process.env.PORT || 5000;
 
 // Middlewares
-app.use(cors()); // Habilita o CORS para permitir requisições do frontend
-app.use(express.json()); // Habilita o parsing de JSON para requisições com body
+app.use(cors());
+app.use(express.json());
+
+// Rotas da API
+app.use('/api/auth', authRoutes); // Usa as rotas de autenticação sob o prefixo /api/auth
 
 // Rota de teste
 app.get('/', (req, res) => {
