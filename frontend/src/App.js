@@ -7,6 +7,8 @@ import ArtistList from './pages/ArtistList';
 import ArtistForm from './pages/ArtistForm';
 import AlbumList from './pages/AlbumList';
 import AlbumForm from './pages/AlbumForm';
+import SongList from './pages/SongList';
+import SongForm from './pages/SongForm';
 
 // Componente para proteger rotas
 const PrivateRoute = ({ children }) => {
@@ -36,7 +38,7 @@ const Home = () => {
         <ul>
           <li><Link to="/artists">Gerenciar Artistas</Link></li>
           <li><Link to="/albums">Gerenciar Álbuns</Link></li>
-          <li><Link to="/songs">Gerenciar Músicas (em breve)</Link></li>
+          <li><Link to="/songs">Gerenciar Músicas</Link></li>
         </ul>
       </nav>
     </div>
@@ -70,8 +72,10 @@ function App() {
             <Route path="/albums" element={<PrivateRoute><AlbumList /></PrivateRoute>} />
             <Route path="/albums/new" element={<PrivateRoute><AlbumForm /></PrivateRoute>} />
             <Route path="/albums/edit/:id" element={<PrivateRoute><AlbumForm /></PrivateRoute>} />
-            {/* Músicas (em breve) */}
-            <Route path="/songs" element={<PrivateRoute><div>Página de Músicas (em breve)</div></PrivateRoute>} />
+            {/* Músicas */}
+            <Route path="/songs" element={<PrivateRoute><SongList /></PrivateRoute>} />
+            <Route path="/songs/new" element={<PrivateRoute><SongForm /></PrivateRoute>} />
+            <Route path="/songs/edit/:id" element={<PrivateRoute><SongForm /></PrivateRoute>} />
           </Routes>
         </main>
       </div>

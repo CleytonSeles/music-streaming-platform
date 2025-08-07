@@ -67,6 +67,17 @@ const AlbumForm = () => {
     setMessage('');
     setError(null);
 
+    // Validação no frontend para garantir que todos os campos obrigatórios estão preenchidos
+    if (!title.trim()) {
+      setError('Por favor, informe o título do álbum.');
+      return;
+    }
+
+    if (!artistId) {
+      setError('Por favor, selecione um artista.');
+      return;
+    }
+
     const payload = {
       title,
       artist_id: artistId, // Ajustado para usar artist_id conforme esperado pelo backend
@@ -97,21 +108,25 @@ const AlbumForm = () => {
   if (error) return <p style={{ color: 'red' }}>{error}</p>;
 
   return (
-    <div>
-      <h2>{id ? 'Editar Álbum' : 'Adicionar Novo Álbum'}</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Título:</label>
+    <div style={{ maxWidth: '600px', margin: '0 auto', padding: '20px' }}>
+      <h2 style={{ marginBottom: '20px' }}>{id ? 'Editar Álbum' : 'Adicionar Novo Álbum'}</h2>
+      {error && <p style={{ color: 'red', padding: '10px', backgroundColor: '#ffeeee', borderRadius: '5px', marginBottom: '15px' }}>{error}</p>}
+      {message && <p style={{ color: 'green', padding: '10px', backgroundColor: '#eeffee', borderRadius: '5px', marginBottom: '15px' }}>{message}</p>}
+      
+      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+          <label style={{ fontWeight: 'bold' }}>Título: <span style={{ color: 'red' }}>*</span></label>
           <input
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             required
             placeholder="Ex: The Dark Side of the Moon"
+            style={{ padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }}
           />
         </div>
-        <div>
-          <label>Ano:</label>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+          <label style={{ fontWeight: 'bold' }}>Ano:</label>
           <input
             type="number"
             min="1900"
@@ -119,11 +134,17 @@ const AlbumForm = () => {
             value={year}
             onChange={(e) => setYear(e.target.value)}
             placeholder={`Ex: ${currentYear}`}
+            style={{ padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }}
           />
         </div>
-        <div>
-          <label>Artista:</label>
-          <select value={artistId} onChange={(e) => setArtistId(e.target.value)} required>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+          <label style={{ fontWeight: 'bold' }}>Artista: <span style={{ color: 'red' }}>*</span></label>
+          <select 
+            value={artistId} 
+            onChange={(e) => setArtistId(e.target.value)} 
+            required
+            style={{ padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }}
+          >
             <option value="">Selecione um artista</option>
             {artists.map((artist) => (
               <option key={artist._id} value={artist._id}>
@@ -132,11 +153,40 @@ const AlbumForm = () => {
             ))}
           </select>
         </div>
-        <button type="submit">{id ? 'Salvar alterações' : 'Criar Álbum'}</button>
+        <div style={{ marginTop: '10px' }}>
+          <button 
+            type="submit" 
+            style={{ 
+              padding: '10px 15px', 
+              backgroundColor: '#4CAF50', 
+              color: 'white', 
+              border: 'none', 
+              borderRadius: '4px', 
+              cursor: 'pointer',
+              fontWeight: 'bold'
+            }}
+          >
+            {id ? 'Salvar alterações' : 'Criar Álbum'}
+          </button>
+          <Link 
+            to="/albums" 
+            style={{ 
+              marginLeft: '10px', 
+              padding: '10px 15px', 
+              backgroundColor: '#f0f0f0', 
+              color: '#333', 
+              textDecoration: 'none', 
+              borderRadius: '4px',
+              display: 'inline-block'
+            }}
+          >
+            Cancelar
+          </Link>
+        </div>
       </form>
-      {message && <p>{message}</p>}
-      <p>
-        <Link to="/albums">Voltar para a lista de álbuns</Link>
+      
+      <p style={{ marginTop: '20px', fontSize: '0.9em' }}>
+        <span style={{ color: 'red' }}>*</span> Campos obrigatórios
       </p>
     </div>
   );
